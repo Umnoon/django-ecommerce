@@ -1,0 +1,42 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %} Order History {% endblock title %}
+
+{% block content %}
+<!-- Order History Section Begin -->
+<section class="order-history-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Your Order History</h3>
+                {% if orders %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{ order.order_id }}</td>
+                            <td>${{ order.total }}</td>
+                            <td>{{ order.status }}</td>
+                            <td>{{ order.created_date }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <p>You have no orders.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Order History Section End -->
+{% endblock content %}

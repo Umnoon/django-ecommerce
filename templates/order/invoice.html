@@ -1,0 +1,58 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block title %} Invoice {% endblock title %}
+{% block content %}
+<!-- Invoice Section Begin -->
+<section class="invoice-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h3>Invoice</h3>
+                <h4>Order ID: {{ order_id }}</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                        {% with product=item.product %}
+                        <tr>
+                            <td class="product-col">
+                                <img src="{{product.thumbnail}}" style="height: 80px;" alt="">
+                                <div class="p-title">
+                                    <h5>{{product.title}}</h5>
+                                </div>
+                            </td>
+
+                            <td class="quantity-col">
+                                <div class="p-quantity">
+                                    <h5>{{item.quantity}}</h5>
+                                </div>
+                            </td>
+                            <td class="total">$ {{item.subtotal|floatformat:"2"}}</td>
+                            <td class="product-close">
+                                <a class="text-decoration-none text-dark" href="?product_id={{product.id}}&&quantity=-{{item.quantity}}"></a>
+                            </td>
+                        </tr>
+                        {% endwith%}
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <div class="text-right">
+                    <h4>Total Amount: ${{ cart.total }}</h4>
+                </div>
+                <form action="{% url 'order:create-checkout-session' %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="order_id" value="{{ order_id }}">
+                    <button type="submit">Check out</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Invoice Section End -->
+{% endblock content %}
